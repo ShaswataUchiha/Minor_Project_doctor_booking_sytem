@@ -104,7 +104,7 @@ const getMyApponments = AsyncHandler(async (req, res) => {
     .status(200)
     .json(
       new ApiResponse(true, "appointments fetched successfully", {
-        data: { bookings, doctors },
+        doctors,
       })
     );
 });

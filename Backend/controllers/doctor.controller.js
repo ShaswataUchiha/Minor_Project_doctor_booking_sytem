@@ -42,7 +42,7 @@ const getSingleDoctor = AsyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(true, "doctor fetched successfully", { data: doctor })
+      new ApiResponse(true, "doctor fetched successfully", {doctor})
     );
 });
 

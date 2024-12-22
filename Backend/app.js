@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.route.js"
 import userRouts from "./routes/user.route.js"
 import docorRoutes from "./routes/doctor.route.js"
 import reviewRoutes from "./routes/review.route.js"
+import bookingRoutes from "./routes/booking.route.js"
 
 
 const app = express();
@@ -25,6 +26,8 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/user", userRouts)
 app.use("/api/v1/doctor", docorRoutes)
 app.use("/api/v1/reviews", reviewRoutes)
+app.use("/api/v1/bookings", bookingRoutes)
+
 
 
 

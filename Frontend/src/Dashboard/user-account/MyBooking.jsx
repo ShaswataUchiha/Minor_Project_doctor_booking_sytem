@@ -1,5 +1,6 @@
 import React from "react";
 import useFetchData from "../../hooks/useFetchData";
+import useFetchDataGetBooking from "../../hooks/useFetcgDataGetBokkings";
 import { BASE_URL } from "../../config";
 import DoctorCard from "./../../Components/Doctors/DoctorCard";
 import Loader from "../../Components/Loader/Loader";
@@ -10,7 +11,9 @@ const MyBooking = () => {
     data: appointments,
     loading,
     error,
-  } = useFetchData(`${BASE_URL}/user/appoinments/my-appointments`);
+  } = useFetchDataGetBooking(`${BASE_URL}/user/appoinments/my-appointments`);
+
+  console.log(appointments)
 
   return (
     <div>

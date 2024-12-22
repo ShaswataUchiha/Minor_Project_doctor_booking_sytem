@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import MyBooking from "./MyBooking";
 import Profile from "./Profile";
 import useFetchData from "../../hooks/useFetchData";
+import useFetchDataDoctorOverview from "../../hooks/useFetchDataDoctorOverview";
 import { BASE_URL } from "../../config";
 import Loader from "../../Components/Loader/Loader";
 import Error from "../../Components/Error/Error";
@@ -18,9 +19,9 @@ const MyAccount = () => {
     data: userData,
     loading,
     error,
-  } = useFetchData(`${BASE_URL}/user/profile/me`);
+  } = useFetchDataDoctorOverview(`${BASE_URL}/user/profile/me`);
 
-  console.log(userData, "UserData");
+  // console.log(userData, "UserData");
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" }); // Dispatch LOGOUT action to reset state

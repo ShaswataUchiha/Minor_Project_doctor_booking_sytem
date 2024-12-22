@@ -4,6 +4,7 @@ import {BASE_URL, token} from "./../../config"
 import { toast } from "react-toastify";
 
 const Profile = ({doctorData}) => {
+  // console.log(doctorData)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,57 +14,49 @@ const Profile = ({doctorData}) => {
     gender: "",
     specialization: "",
     ticketPrice: 0,
-    experience: [
-      { startingDate: "", endingDate: "", position: "", hospital: "" },
-    ],
-    qualifications: [
-      { startingDate: "", endingDate: "", degree: "", university: "" },
-    ],
-    timeSlots: [{ day: "", staartingTime: "", endingTime: "" }],
+    experience: [],
+    qualifications: [],
+    timeSlots: [],
     about: "",
   });
 
   useEffect(()=> {
     setFormData({
-      name: doctorData.name,
-      email: doctorData.email,
-      phoneNumber: doctorData.phoneNumber,
-      bio: doctorData.bio,
-      gender: doctorData.gender,
-      specialization: doctorData.specialization,
-      ticketPrice: doctorData.ticketPrice,
-      experience: doctorData.experience,
-      qualifications: doctorData.qualifications,
-      timeSlots: doctorData.timeSlots,
-      about: doctorData.about,
+      name: doctorData?.name,
+      email: doctorData?.email,
+      phoneNumber: doctorData?.phoneNumber,
+      bio: doctorData?.bio,
+      gender: doctorData?.gender,
+      specialization: doctorData?.specialization,
+      ticketPrice: doctorData?.ticketPrice,
+      experience: doctorData?.experience,
+      qualifications: doctorData?.qualifications,
+      timeSlots: doctorData?.timeSlots,
+      about: doctorData?.about,
     })
   }, [doctorData])
 
   const handelInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const updateProfileHandeler = () => {
-    e.preventDefault();
-  };
-
   // Custom function for adding itme
-  const addItme = (key, item) => {
+  const addItem = (key, item) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [key]: [...prevFormData[key], item],
+      [key]: [...(prevFormData[key] || []), item], // Fallback to an empty array
     }));
   };
 
   // Resusable function for delete item
-  const deleteItem = () => {
-    setFormData(prevFormData => ({
+  const deleteItem = (key, index) => {
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      [key] : prevFormData[key].filter((_, i) => i !== index)
-    }))
-  }
+      [key]: prevFormData[key]?.filter((_, i) => i !== index) || [], // Safe fallback
+    }));
+  };
 
-  const handleResusableInputChange = (key, event, index) => {
+  // Reusuable input change function
+  const handleResusableInputChange = (key, index, event) => {
     const {name, value} = event.target;
 
     setFormData(prevFormData => {
@@ -80,27 +73,27 @@ const Profile = ({doctorData}) => {
   const addQualification = (e) => {
     e.preventDefault();
 
-    addItme("qualification", {
+    addItem("qualifications", {
       startingDate: "",
       endingDate: "",
-      degree: "",
-      university: "",
+      degree: "MBBS",
+      university: "AIMS",
     });
   };
 
-  const deleteQualification = (e, index) => {
-    e.preventDefault();
-    deleteItem('qualification', index)
+  const handleQualificationChange = (event, index) => {
+    handleResusableInputChange('qualification', index, event)
   }
 
-  const handleQualificationChange = (event, index) => {
-    handleResusableInputChange('qualification', event, index)
+  const deleteQualification = (e, index) => {
+    e.preventDefault();
+    deleteItem('qualifications', index)
   }
 
   const addExperience = (e) => {
     e.preventDefault();
 
-    addItme("experiences", {
+    addItem("experience", {
       startingDate: "",
       endingDate: "",
       position: "",
@@ -110,24 +103,24 @@ const Profile = ({doctorData}) => {
 
   const deleteExperience = (e, index) => {
     e.preventDefault();
-    deleteItem('experiences', index)
+    deleteItem('experience', index)
   }
 
   const handleExperienceChange = (event, index) => {
-    handleResusableInputChange('experiences', event, index)
+    handleResusableInputChange('experience', event, index)
   }
 
   const addTimeSlot = (e) => {
     e.preventDefault();
 
-    addItme("timeSlots", {
-      day : "",
-      startingTime: "",
-      endingTime: "",
+    addItem("timeSlots", {
+      day : "Sunday",
+      startingTime: "10:00",
+      endingTime: "04:30",
     });
   };
 
-  const deleteTimeslot = (e, index) => {
+  const deleteTimeSlot = (e, index) => {
     e.preventDefault();
     deleteItem('timeSlots', index)
   }
@@ -136,7 +129,7 @@ const Profile = ({doctorData}) => {
     handleResusableInputChange('timeSlots', event, index)
   }
 
-  const updateProfileHAndeler = async (e) => {
+  const updateProfileHandeler = async (e) => {
     e.preventDefault();
     // Make API call to update the profile
     try {
@@ -157,7 +150,7 @@ const Profile = ({doctorData}) => {
       }
       toast.success("Profile updated successfully");
     } catch (error) {
-      
+      console.log(error, "in doctor profile page during uploading the data")
     }
   }
 
@@ -211,7 +204,7 @@ const Profile = ({doctorData}) => {
             name="bio"
             value={formData.bio}
             onChange={handelInputChange}
-            placeholder="Full Name"
+            placeholder="Enter Your Bio"
             className="w-full px-4 py-3 border border-[#0066ff61] rounded-lg focus:outline-none focus:ring-2 focus:ring-primaryColor text-[16px] text-headingColor placeholder:text-textColor"
             maxLength={100}
           />
@@ -247,7 +240,6 @@ const Profile = ({doctorData}) => {
                 <option value="dermatologist">Dermatologist</option>
               </select>
             </div>
-
             <div>
               <p className="form__label">Ticket Price</p>
               <input
@@ -263,7 +255,7 @@ const Profile = ({doctorData}) => {
         </div>
 
         <div className="mb-5">
-          <p className="form__label">Oualifications</p>
+          <p className="form__label">Oualifications*</p>
           {formData.qualifications?.map((item, index) => (
             <div key={index}>
               <div>
@@ -323,6 +315,7 @@ const Profile = ({doctorData}) => {
             Add qualifications
           </button>
         </div>
+
         <div className="mb-5">
           <p className="form__label">Experience</p>
           {formData.experience?.map((item, index) => (

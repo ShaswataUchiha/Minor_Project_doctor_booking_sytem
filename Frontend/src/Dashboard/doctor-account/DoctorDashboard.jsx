@@ -15,7 +15,7 @@ const DoctorDashboard = () => {
     `${BASE_URL}/doctor/profile/me`
   );
 
-  // console.log(data)
+  console.log(data)
 
   const [tab, setTab] = useState("overview");
 
@@ -63,7 +63,7 @@ const DoctorDashboard = () => {
                           className="bg-[#CCF0F3] text-irisBlueColor py-1 px-4 lg:py-3 lg:px-6
                         rounded text-[12px] loading-4 lg:text-[16px] lg:leading-6 font-semibold"
                         >
-                          {data?.doctor?.spcilization}
+                          {data?.doctor?.specialization}
                         </span>
 
                         <h3 className="text-[22px] leading-9 font-bold text-headingColor mt-3">
@@ -88,7 +88,7 @@ const DoctorDashboard = () => {
                         </div>
 
                         <p className="text__para font-[15px] lg:max-w-[390px] leading-6">
-                          Doctor Bio
+                          Doctor Bio {data?.docotr?.bio}
                         </p>
                       </div>
                     </div>
@@ -102,9 +102,9 @@ const DoctorDashboard = () => {
                 )}
 
                 {tab === "appoinments" && (
-                  <Appointments appointments={data.appointments} />
+                  <Appointments appointments={data?.doctor?.appointments} />
                 )}
-                {tab === "settings" && <Profile doctorData={data} />}
+                {tab === "settings" && <Profile doctorData={data?.doctor} />}
               </div>
             </div>
           </div>

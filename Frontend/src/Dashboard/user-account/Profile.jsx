@@ -107,6 +107,30 @@ const Profile = ({userData}) => {
       console.log("Error in Signup.JSX");
     }
   };
+   const updateProfileHandeler = async (e) => {
+      e.preventDefault();
+      // Make API call to update the profile
+      try {
+        const res = await fetch(`${BASE_URL}/doctor/updateDoctor/${doctorData._id}`,{
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        })
+  
+        const result = await res.json()
+  
+        if (!res.ok) {
+          throw new Error("Failed to update profile");
+          console.log(result.message)
+        }
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        console.log(error, "in doctor profile page during uploading the data")
+      }
+    }
   return (
     <div className="mt-10
     
